@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class App {
     }
 
     private static String getDatabaseUrl() {
-        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:Url");
     }
 
     private static String readResourceFile(String fileName) throws IOException {
@@ -39,6 +40,7 @@ public class App {
     }
 
     public static Javalin getApp() throws IOException, SQLException {
+        var conn = DriverManager.getConnection("jdbc:h2:mem:project");
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(getDatabaseUrl());
