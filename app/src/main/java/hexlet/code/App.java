@@ -40,10 +40,10 @@ public class App {
     }
 
     public static Javalin getApp() throws IOException, SQLException {
-        var conn = DriverManager.getConnection("jdbc:h2:mem:project");
+//        var conn = DriverManager.getConnection("jdbc:h2:mem:project");
 
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(getDatabaseUrl());
+        hikariConfig.setJdbcUrl("jdbc:h2:mem:project");
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         var sql = readResourceFile("schema.sql");
