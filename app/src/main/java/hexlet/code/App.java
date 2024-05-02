@@ -24,7 +24,7 @@ public class App {
     }
 
     private static String getDatabaseUrl() {
-        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:Url");
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
 
     private static String readResourceFile(String fileName) throws IOException {
@@ -40,9 +40,8 @@ public class App {
     }
 
     public static Javalin getApp() throws IOException, SQLException {
-//        var conn = DriverManager.getConnection("jdbc:h2:mem:project");
 
-        HikariConfig hikariConfig = new HikariConfig("jdbc:h2:mem:project");
+        HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(getDatabaseUrl());
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
