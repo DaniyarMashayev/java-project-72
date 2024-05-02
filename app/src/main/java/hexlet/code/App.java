@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,7 @@ public class App {
         return Integer.parseInt(port);
     }
 
-    private static String getDatabaseUrl() {
+    private static String getDatabaseUrl() throws SQLException, IOException {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
 
