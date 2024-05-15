@@ -2,7 +2,6 @@ package hexlet.code.repository;
 
 import hexlet.code.model.Url;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
