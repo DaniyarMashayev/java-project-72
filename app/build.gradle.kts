@@ -34,6 +34,7 @@ dependencies {
     implementation("gg.jte:jte:3.1.9")
     implementation("com.konghq:unirest-java:3.14.5")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    implementation("org.jsoup:jsoup:1.17.2")
 }
 
 tasks.test {

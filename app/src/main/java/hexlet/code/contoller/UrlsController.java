@@ -6,7 +6,6 @@ import hexlet.code.model.Url;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
