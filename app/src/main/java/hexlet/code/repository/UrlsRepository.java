@@ -100,4 +100,21 @@ public class UrlsRepository extends BaseRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public static void delete(Long id) {
+        String sql = "DELETE FROM urls WHERE id = ?";
+        try (var conn = dataSource.getConnection();
+            var stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            int result = stmt.executeUpdate();
+
+            if (result > 0) {
+                System.out.println("Url with ID " + id + " has been successfully deleted");
+            } else {
+                System.out.println("Url with ID " + id + " not found");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -2,9 +2,14 @@ package hexlet.code;
 
 import static hexlet.code.App.readResourceFile;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Objects;
 
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlCheckRepository;
@@ -75,18 +80,45 @@ public class AppTest {
     }
 
     @Test
+    public void testUrlsPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get(NamedRoutes.urlsPath());
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testUrlPage() {
+        String input = "https://www.mail.ru";
+        var url = new Url(input);
+        url.setCreatedAt(new Timestamp(new Date().getTime()));
+        UrlsRepository.save(url);
+
+        JavalinTest.test(app, (server, client) -> {
+            assertTrue(UrlsRepository.find(url.getId()).isPresent());
+
+            var response = client.get(NamedRoutes.urlPath(url.getId()));
+
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(Objects.requireNonNull(response.body()).string()).contains(input);
+            assertEquals(UrlsRepository.find(url.getId()).orElseThrow().getName(), input);
+            assertEquals(UrlsRepository.find(input).orElseThrow().getName(), input);
+        });
+    }
+
+    @Test
     public void testUrlCheck() {
-        var url = new Url(baseUrl);
+        Url url = new Url(baseUrl);
         UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             try (var response = client.post(NamedRoutes.urlChecksPath(url.getId()))) {
-                assertThat(response.code()).isEqualTo(200);
                 var check = UrlCheckRepository.find(url.getId()).orElseThrow();
+                assertThat(response.code()).isEqualTo(200);
                 assertThat(check.getTitle()).isEqualTo("Test Title");
                 assertThat(check.getH1()).isEqualTo("Test Page Analyzer");
                 assertThat(check.getDescription()).isEqualTo("");
-            } catch (final Exception e) {
-                System.out.println(e.getMessage());
+            } catch (final Exception th) {
+                System.out.println(th.getMessage());
             }
         });
     }

@@ -3,7 +3,7 @@
 @import hexlet.code.util.NamedRoutes
 @param UrlPage page
 
-@template.layout.page(
+@template.layout.page(page = page,
 content = @`
     <section>
         <div class="container-lg mt-5">
@@ -21,17 +21,13 @@ content = @`
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td>19/02/2024 16:29</td>
                     <td>${page.getUrl().getCreatedAt().toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))}</td>
                 </tr>
                 </tbody>
             </table>
 
-
-
-
             <h2 class="mt-5">Проверки</h2>
-            <form method="post" action="/urls/1/checks">
+            <form method="post" action="${NamedRoutes.urlChecksPath(page.getUrl().getId())}">
                 <button type="submit" class="btn btn-primary">Запустить проверку</button>
             </form>
 
@@ -39,19 +35,35 @@ content = @`
                 <thead>
                 <tr><th class="col-1">ID</th>
                     <th class="col-1">Код ответа</th>
-                    <th>Заголовок</th>
-                    <th>Заголовок первого уровня</th>
-                    <th>Описание</th>
+                    <th>title</th>
+                    <th>h1</th>
+                    <th>description</th>
                     <th class="col-2">Дата проверки</th>
-                </tr></thead>
+                </tr>
+                </thead>
                 <tbody>
-
-
-
+                @for (var check : page.getUrlChecks())
+                    <tr>
+                        <td>
+                            ${check.getId()}
+                        </td>
+                        <td>
+                            ${check.getStatusCode()}
+                        </td>
+                        <td>
+                            ${check.getH1()}
+                        </td>
+                        <td>
+                            ${check.getDescription()}
+                        </td>
+                        <td>
+                            ${check.getCreatedAt().toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:MM"))}
+                        </td>
+                    </tr>
+                @endfor
                 </tbody>
-            </table>
-        </div>
-
-    </section>
-`
+                </table>
+            </div>
+        </section>
+    `
 )

@@ -8,11 +8,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Getter
 @Setter
+@Getter
 @ToString
-public class Url {
-    private Long id;
+public final class Url {
+    private long id;
 
     @ToString.Include
     private String name;

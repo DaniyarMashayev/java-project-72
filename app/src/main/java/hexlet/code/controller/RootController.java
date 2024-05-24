@@ -1,4 +1,4 @@
-package hexlet.code.contoller;
+package hexlet.code.controller;
 
 import io.javalin.http.Context;
 

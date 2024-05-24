@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static hexlet.code.repository.BaseRepository.dataSource;
-
-public class UrlCheckRepository {
+public class UrlCheckRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) {
         String sql = "INSERT INTO url_checks (url_id, status_code, title, h1, description, created_at) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -68,7 +66,7 @@ public class UrlCheckRepository {
     }
 
     public static List<UrlCheck> getChecksById(long urlId) {
-        String sql = "SELECT * FROm url_cheks WHERE url_id = ?";
+        String sql = "SELECT * FROm url_checks WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
             var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, urlId);
