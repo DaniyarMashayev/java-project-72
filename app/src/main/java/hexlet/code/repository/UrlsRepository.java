@@ -74,7 +74,7 @@ public class UrlsRepository extends BaseRepository {
                 return Optional.of(url);
             }
             return Optional.empty();
-    } catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
