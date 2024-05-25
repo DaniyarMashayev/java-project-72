@@ -126,8 +126,10 @@ public class AppTest {
 
     @Test
     public void testUrlNotFound() {
+        long id = 9999;
+        UrlsRepository.delete(id);
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get(NamedRoutes.urlPath(99999L));
+            var response = client.get(NamedRoutes.urlPath(id));
             assertThat(response.code()).isEqualTo(404);
         });
     }
