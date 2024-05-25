@@ -107,6 +107,17 @@ public class AppTest {
     }
 
     @Test
+    public void testInvalidUrl() {
+        String input = "url=test.com";
+        JavalinTest.test(app, (server, client) -> {
+            try (var response = client.post(NamedRoutes.urlsPath(), input)) {
+                assertThat(response.code()).isEqualTo(400);
+                assertThat(response.body() != null ? response.body().string() : null).contains("Некорректный URL");
+            }
+        });
+    }
+
+    @Test
     public void testUrlNotFound() {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get(NamedRoutes.urlPath(99999L));
