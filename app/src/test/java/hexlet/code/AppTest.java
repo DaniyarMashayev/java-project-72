@@ -59,6 +59,28 @@ public class AppTest {
     }
 
     @Test
+    public void testUrl1() {
+        JavalinTest.test(app, (server, client) -> {
+            var request = "url=https://test-domain.com";
+            var response = client.post(NamedRoutes.urlsPath(), request);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("https://test-domain.com");
+            assertThat(UrlsRepository.getEntities()).hasSize(1);
+        });
+    }
+
+    @Test
+    public void testUrl2() {
+        JavalinTest.test(app, (server, client) -> {
+            var request = "url=https://test-domain.com:8080/example/test";
+            var response = client.post(NamedRoutes.urlsPath(), request);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("https://test-domain.com:8080");
+            assertThat(UrlsRepository.getEntities()).hasSize(1);
+        });
+    }
+    
+    @Test
     public void testUrlsPage() {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get(NamedRoutes.urlsPath());
