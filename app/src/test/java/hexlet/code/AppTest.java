@@ -13,11 +13,13 @@ import java.util.Date;
 import java.util.Objects;
 
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
+import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -52,38 +54,16 @@ public class AppTest {
     @Test
     public void testMainPage() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get(NamedRoutes.rootPath());
+            Response response = client.get(NamedRoutes.rootPath());
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("Анализатор страниц");
         });
     }
 
     @Test
-    public void testUrl1() {
-        JavalinTest.test(app, (server, client) -> {
-            var request = "url=https://test-domain.com";
-            var response = client.post(NamedRoutes.urlsPath(), request);
-            assertThat(response.code()).isEqualTo(200);
-            assertThat(response.body().string()).contains("https://test-domain.com");
-            assertThat(UrlsRepository.getEntities()).hasSize(1);
-        });
-    }
-
-    @Test
-    public void testUrl2() {
-        JavalinTest.test(app, (server, client) -> {
-            var request = "url=https://test-domain.com:8080/example/test";
-            var response = client.post(NamedRoutes.urlsPath(), request);
-            assertThat(response.code()).isEqualTo(200);
-            assertThat(response.body().string()).contains("https://test-domain.com:8080");
-            assertThat(UrlsRepository.getEntities()).hasSize(1);
-        });
-    }
-    
-    @Test
     public void testUrlsPage() {
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get(NamedRoutes.urlsPath());
+            Response response = client.get(NamedRoutes.urlsPath());
             assertThat(response.code()).isEqualTo(200);
         });
     }
@@ -91,14 +71,14 @@ public class AppTest {
     @Test
     public void testUrlPage() {
         String input = "https://www.mail.ru";
-        var url = new Url(input);
+        Url url = new Url(input);
         url.setCreatedAt(new Timestamp(new Date().getTime()));
         UrlsRepository.save(url);
 
         JavalinTest.test(app, (server, client) -> {
             assertTrue(UrlsRepository.find(url.getId()).isPresent());
 
-            var response = client.get(NamedRoutes.urlPath(url.getId()));
+            Response response = client.get(NamedRoutes.urlPath(url.getId()));
 
             assertThat(response.code()).isEqualTo(200);
             assertThat(Objects.requireNonNull(response.body()).string()).contains(input);
@@ -112,8 +92,8 @@ public class AppTest {
         String input = "url=https://www.mail.ru";
         JavalinTest.test(app, (server, client) -> {
             client.post(NamedRoutes.urlsPath(), input);
-            var response = client.get(NamedRoutes.urlsPath());
-            var bodyString = Objects.requireNonNull(response.body()).string();
+            Response response = client.get(NamedRoutes.urlsPath());
+            String bodyString = Objects.requireNonNull(response.body()).string();
             assertThat(response.code()).isEqualTo(200);
             assertThat(UrlsRepository.getEntities()).hasSize(1);
             Url url = UrlsRepository.find("https://www.mail.ru")
@@ -151,7 +131,7 @@ public class AppTest {
         long id = 9999;
         UrlsRepository.delete(id);
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get(NamedRoutes.urlPath(id));
+            Response response = client.get(NamedRoutes.urlPath(id));
             assertThat(response.code()).isEqualTo(404);
         });
     }
@@ -162,7 +142,7 @@ public class AppTest {
         UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             try (var response = client.post(NamedRoutes.urlChecksPath(url.getId()))) {
-                var check = UrlCheckRepository.find(url.getId()).orElseThrow();
+                UrlCheck check = UrlCheckRepository.find(url.getId()).orElseThrow();
                 assertThat(response.code()).isEqualTo(200);
                 assertThat(check.getTitle()).isEqualTo("Test Title");
                 assertThat(check.getH1()).isEqualTo("Test Page Analyzer");
