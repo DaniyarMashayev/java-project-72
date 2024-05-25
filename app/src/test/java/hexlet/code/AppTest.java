@@ -20,6 +20,7 @@ import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,10 +29,11 @@ import io.javalin.testtools.JavalinTest;
 public class AppTest {
     private static Javalin app;
     private static String baseUrl;
+    private static MockWebServer mockServer;
 
     @BeforeAll
     public static void beforeAll() throws IOException {
-        MockWebServer mockServer = new MockWebServer();
+        mockServer = new MockWebServer();
         baseUrl = mockServer.url("/").toString();
         MockResponse mockResponse = new MockResponse().setBody(readResourceFile("fixtures/test.html"));
         mockServer.enqueue(mockResponse);
@@ -40,6 +42,11 @@ public class AppTest {
     @BeforeEach
     public final void setUp() throws IOException, SQLException {
         app = App.getApp();
+    }
+
+    @AfterAll
+    public static void afterAll() throws IOException {
+        mockServer.shutdown();
     }
 
     @Test
