@@ -44,6 +44,6 @@ bin/
 .DS_Store
 
 *.class
-./jte-classes/
+jte-classes/
 *.settings
 bin
