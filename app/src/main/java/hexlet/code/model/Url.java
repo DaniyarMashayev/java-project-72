@@ -8,15 +8,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-@Setter
 @Getter
 @ToString
 public final class Url {
+    @Setter
     private long id;
 
     @ToString.Include
     private String name;
 
+    @Setter
     private Timestamp createdAt;
 
     public Url(String name) {

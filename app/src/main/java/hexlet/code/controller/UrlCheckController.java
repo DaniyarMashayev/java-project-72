@@ -1,5 +1,6 @@
 package hexlet.code.controller;
 
+import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlsRepository;
@@ -15,7 +16,7 @@ import org.jsoup.nodes.Document;
 public class UrlCheckController {
     public static void createCheck(Context ctx) {
         long urlId = ctx.formParamAsClass("id", Long.class).getOrDefault(null);
-        var url = UrlsRepository.find(urlId)
+        Url url = UrlsRepository.find(urlId)
                 .orElseThrow(() -> new NotFoundResponse("Url with id = " + urlId + " not found"));
         try {
             HttpResponse<String> response = Unirest.get(url.getName()).asString();

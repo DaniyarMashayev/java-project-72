@@ -95,8 +95,6 @@ public class AppTest {
         });
     }
 
-
-
     @Test
     public void testDoubleUrlPage() {
         String input = "url=https://www.mail.ru";

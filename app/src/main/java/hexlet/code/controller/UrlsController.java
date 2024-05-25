@@ -30,6 +30,7 @@ public class UrlsController {
             var page = new BasePage("Некорректный URL", "danger");
             ctx.status(400);
             ctx.render("index.jte", Collections.singletonMap("page", page));
+            return;
         }
         parsedUrl = new URI(inputUrl);
         var name = parsedUrl.getScheme() + "://" + parsedUrl.getAuthority();
@@ -58,8 +59,8 @@ public class UrlsController {
     public static void show(Context ctx) {
         long id = ctx.pathParamAsClass("id", long.class).get();
 
-        var url = UrlsRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("URL not found"));
+        Url url = UrlsRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("URL with id = " + id + " not found"));
         List<UrlCheck> checks = UrlCheckRepository.getChecksById(id);
         var page = new UrlPage(url, checks);
         var flash = ctx.consumeSessionAttribute("flash");

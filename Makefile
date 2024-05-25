@@ -22,7 +22,7 @@ lint:
 	./gradlew checkstyleMain checkstyleTest
 
 test:
-	./gradlew test
+	cd app/ && ./gradlew test
 
 report:
 	cd app/ && ./gradlew jacocoTestReport
