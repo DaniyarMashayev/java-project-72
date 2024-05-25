@@ -69,4 +69,10 @@ public class UrlsController {
         page.setFlashType((String) flashType);
         ctx.render("urls/show.jte", Collections.singletonMap("page", page));
     }
+
+    public static void deleteById(Context ctx) {
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        UrlsRepository.delete(id);
+        ctx.redirect(NamedRoutes.urlsPath());
+    }
 }

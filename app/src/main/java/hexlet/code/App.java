@@ -81,6 +81,7 @@ public class App {
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
         app.post(NamedRoutes.urlChecksPath("{id}"), UrlCheckController::createCheck);
         app.get(NamedRoutes.urlChecksPath("{id}"), UrlsController::show);
+        app.delete(NamedRoutes.urlPath("{id}"), UrlsController::deleteById);
 
         app.exception(Exception.class, (endpoint, ctx) -> {
             ctx.status(404);
