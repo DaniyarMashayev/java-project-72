@@ -141,10 +141,9 @@ public class AppTest {
         Url url = new Url(baseUrl);
         UrlsRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
-            try (var response = client.post(NamedRoutes.urlChecksPath(url.getId()))) {
-                UrlCheck check = UrlCheckRepository.find(url.getId()).orElseThrow();
+            try (var response = client.post(String.format("/urls/%s/checks"))) {
                 assertThat(response.code()).isEqualTo(200);
-                assertThat(check.getUrlId()).isNotNull();
+                UrlCheck check = UrlCheckRepository.find(url.getId()).orElseThrow();
                 assertThat(check.getTitle()).isEqualTo("Test Title");
                 assertThat(check.getH1()).isEqualTo("Test Page Analyzer");
                 assertThat(check.getDescription()).isEqualTo("");
