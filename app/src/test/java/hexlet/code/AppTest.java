@@ -144,6 +144,7 @@ public class AppTest {
             try (var response = client.post(String.format("/urls/%s/checks"))) {
                 assertThat(response.code()).isEqualTo(200);
                 UrlCheck check = UrlCheckRepository.find(url.getId()).orElseThrow();
+                assertThat(check).isNotNull();
                 assertThat(check.getTitle()).isEqualTo("Test Title");
                 assertThat(check.getH1()).isEqualTo("Test Page Analyzer");
                 assertThat(check.getDescription()).isEqualTo("");
