@@ -144,6 +144,7 @@ public class AppTest {
             try (var response = client.post(NamedRoutes.urlChecksPath(url.getId()))) {
                 UrlCheck check = UrlCheckRepository.find(url.getId()).orElseThrow();
                 assertThat(response.code()).isEqualTo(200);
+                assertThat(check.getUrlId()).isNotNull();
                 assertThat(check.getTitle()).isEqualTo("Test Title");
                 assertThat(check.getH1()).isEqualTo("Test Page Analyzer");
                 assertThat(check.getDescription()).isEqualTo("");
