@@ -15,7 +15,7 @@ import org.jsoup.nodes.Document;
 
 public class UrlCheckController {
     public static void createCheck(Context ctx) {
-        long urlId = ctx.formParamAsClass("id", Long.class).getOrDefault(null);
+        long urlId = Long.parseLong(ctx.pathParam("id"));
         Url url = UrlsRepository.find(urlId)
                 .orElseThrow(() -> new NotFoundResponse("Url with id = " + urlId + " not found"));
         try {
