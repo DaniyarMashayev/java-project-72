@@ -107,7 +107,7 @@ public class UrlCheckRepository extends BaseRepository {
                 var description = resultSet.getString("description");
                 var urlId = resultSet.getLong("url_id");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description );
+                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
                 urlCheck.setId(id);
                 urlCheck.setCreatedAt(createdAt);
                 result.put(urlCheck.getUrlId(), urlCheck);
