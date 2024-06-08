@@ -1,47 +1,41 @@
 @import hexlet.code.dto.urls.UrlsPage
-@import hexlet.code.repository.UrlCheckRepository
 @import hexlet.code.util.NamedRoutes
-@import java.time.format.DateTimeFormatter
 @param UrlsPage page
 
 @template.layout.page(page = page,
-    content = @`
-        <div class="container-lg mt-5">
-            <h1>Сайты</h1>
-            <table class="table table-bordered table-hover mt-3">
-                <thead>
+content = @`
+    <div class="container-lg mt-5">
+        <h1>Сайты</h1>
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+            <tr>
+                <th class="col-1">ID</th>
+                <th>Имя</th>
+                <th class="col-2">Последняя проверка</th>
+                <th class="col-1">Код ответа</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(var url : page.getUrls())
                 <tr>
-                    <th class="col-1">ID</th>
-                    <th>Имя</th>
-                    <th class="col-2">Последняя проверка</th>
-                    <th class="col-1">Код ответа</th>
+                    <td>
+                        ${url.getId()}
+                    </td>
+                    <td>
+                        <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
+                    </td>
+                    <td>
+                        ${page.getChecks().isEmpty() || page.getChecks().get(url.getId()) == null ? ""
+                        : page.getChecks().get(url.getId()).getCreatedAt().toString()}
+                    </td>
+                    <td>
+                        ${page.getChecks().isEmpty() || page.getChecks().get(url.getId()) == null ? ""
+                        : page.getChecks().get(url.getId()).getStatusCode().toString()}
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                @for(var url : page.getUrls())
-                    <tr>
-                        <td>
-                            ${url.getId()}
-                        </td>
-                        <td>
-                            <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
-                        </td>
-                        <td>
-                            !{var checks = UrlCheckRepository.getChecksById(url.getId());}
-                            ${!checks.isEmpty() ?
-                                    checks.get(checks.size() - 1)
-                                    .getCreatedAt().toLocalDateTime()
-                                   .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : ""}
-                        </td>
-                        <td>
-                            ${!checks.isEmpty() ?
-                                    checks.get(checks.size() - 1)
-                                    .getStatusCode() : null}
-                        </td>
-                    </tr>
-                @endfor
-                </tbody>
-            </table>
-        </div>
-    `
+            @endfor
+            </tbody>
+        </table>
+    </div>
+`
 )

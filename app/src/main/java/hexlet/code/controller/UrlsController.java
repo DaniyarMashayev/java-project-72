@@ -13,6 +13,7 @@ import io.javalin.http.NotFoundResponse;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -47,10 +48,11 @@ public class UrlsController {
         ctx.redirect(NamedRoutes.urlsPath());
     }
 
-    public static void index(Context ctx) {
+    public static void index(Context ctx) throws SQLException {
         var flash = ctx.consumeSessionAttribute("flash");
         var flashType = ctx.consumeSessionAttribute("flashType");
-        var page = new UrlsPage(UrlsRepository.getEntities());
+        var checks = UrlCheckRepository.getAllLastChecks();
+        var page = new UrlsPage(UrlsRepository.getEntities(), checks);
         page.setFlash((String) flash);
         page.setFlashType((String) flashType);
         ctx.render("urls/index.jte", Collections.singletonMap("page", page));
