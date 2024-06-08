@@ -31,7 +31,7 @@ public class App {
         return Integer.parseInt(port);
     }
 
-    private static String getDatabaseUrl() throws SQLException, IOException {
+    private static String getDatabaseUrl() {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
 
