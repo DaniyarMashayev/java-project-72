@@ -38,6 +38,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     testImplementation("org.mockito:mockito-core:5.10.0")
+    implementation("org.apache.commons:commons-text:1.10.0")
 }
 
 tasks.test {
